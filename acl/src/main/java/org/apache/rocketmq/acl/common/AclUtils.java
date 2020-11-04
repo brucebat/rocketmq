@@ -17,6 +17,7 @@
 package org.apache.rocketmq.acl.common;
 
 import com.alibaba.fastjson.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,6 +27,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.SortedMap;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.common.constant.LoggerName;
 import org.apache.rocketmq.logging.InternalLogger;
@@ -131,7 +133,7 @@ public class AclUtils {
     }
 
     public static boolean isScope(String netaddress, int index) {
-//        IPv6 Address
+        // IPv6 Address
         if (isColon(netaddress)) {
             netaddress = expandIP(netaddress, 8);
             String[] strArray = StringUtils.split(netaddress, ":");
@@ -159,6 +161,12 @@ public class AclUtils {
 
     }
 
+    /**
+     * 判断地址是否是以冒号进行分隔的
+     *
+     * @param netaddress 网络地址
+     * @return 返回判断结果
+     */
     public static boolean isColon(String netaddress) {
         return netaddress.indexOf(':') > -1;
     }
@@ -308,7 +316,7 @@ public class AclUtils {
         JSONObject yamlDataObject = null;
         try {
             yamlDataObject = AclUtils.getYamlDataObject(fileName,
-                JSONObject.class);
+                    JSONObject.class);
         } catch (Exception e) {
             log.error("Convert yaml file to data object error, ", e);
             return null;
