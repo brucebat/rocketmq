@@ -49,11 +49,26 @@ public class RouteInfoManager {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.NAMESRV_LOGGER_NAME);
     private final static long BROKER_CHANNEL_EXPIRED_TIME = 1000 * 60 * 2;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final HashMap<String/* topic */, List<QueueData>> topicQueueTable;
-    private final HashMap<String/* brokerName */, BrokerData> brokerAddrTable;
-    private final HashMap<String/* clusterName */, Set<String/* brokerName */>> clusterAddrTable;
-    private final HashMap<String/* brokerAddr */, BrokerLiveInfo> brokerLiveTable;
-    private final HashMap<String/* brokerAddr */, List<String>/* Filter Server */> filterServerTable;
+    /**
+     * 主题队列路由表，数据结构key为topic，value为List<QueueData>
+     */
+    private final HashMap<String, List<QueueData>> topicQueueTable;
+    /**
+     * Broker集群信息表，key为BrokerName
+     */
+    private final HashMap<String, BrokerData> brokerAddrTable;
+    /**
+     * broker集群地址表，key为clusterName，value为Set集合存储的brokerName
+     */
+    private final HashMap<String, Set<String>> clusterAddrTable;
+    /**
+     * 当前broker健康状况信息表，key为brokerAddr
+     */
+    private final HashMap<String, BrokerLiveInfo> brokerLiveTable;
+    /**
+     * 过滤服务表，key为brokerAddr，value为List集合存储的Filter Server
+     */
+    private final HashMap<String, List<String>> filterServerTable;
 
     public RouteInfoManager() {
         this.topicQueueTable = new HashMap<String, List<QueueData>>(1024);
