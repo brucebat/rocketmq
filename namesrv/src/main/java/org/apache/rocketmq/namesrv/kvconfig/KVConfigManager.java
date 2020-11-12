@@ -34,7 +34,10 @@ public class KVConfigManager {
     private final NamesrvController namesrvController;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final HashMap<String/* Namespace */, HashMap<String/* Key */, String/* Value */>> configTable =
+    /**
+     * 配置表，key为Namespace，value为HashMap
+     */
+    private final HashMap<String, HashMap<String, String>> configTable =
         new HashMap<String, HashMap<String, String>>();
 
     public KVConfigManager(NamesrvController namesrvController) {

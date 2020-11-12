@@ -120,7 +120,7 @@ public class BrokerStartup {
                 int ratio = messageStoreConfig.getAccessMessageInMemoryMaxRatio() - 10;
                 messageStoreConfig.setAccessMessageInMemoryMaxRatio(ratio);
             }
-
+            // 这里根据配置文件获取对应的配置信息
             if (commandLine.hasOption('c')) {
                 String file = commandLine.getOptionValue('c');
                 if (file != null) {
@@ -133,6 +133,7 @@ public class BrokerStartup {
                     MixAll.properties2Object(properties, brokerConfig);
                     MixAll.properties2Object(properties, nettyServerConfig);
                     MixAll.properties2Object(properties, nettyClientConfig);
+                    // Broker中消息存储的配置信息
                     MixAll.properties2Object(properties, messageStoreConfig);
 
                     BrokerPathConfigHelper.setBrokerConfigPath(file);
