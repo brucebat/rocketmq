@@ -60,13 +60,17 @@ public class MQFaultStrategy {
             try {
                 int index = tpInfo.getSendWhichQueue().getAndIncrement();
                 for (int i = 0; i < tpInfo.getMessageQueueList().size(); i++) {
+                    // 计算当前位置
                     int pos = Math.abs(index++) % tpInfo.getMessageQueueList().size();
-                    if (pos < 0)
+                    if (pos < 0) {
                         pos = 0;
+                    }
+                    // 根据当前位置获取消息队列
                     MessageQueue mq = tpInfo.getMessageQueueList().get(pos);
                     if (latencyFaultTolerance.isAvailable(mq.getBrokerName())) {
-                        if (null == lastBrokerName || mq.getBrokerName().equals(lastBrokerName))
+                        if (null == lastBrokerName || mq.getBrokerName().equals(lastBrokerName)) {
                             return mq;
+                        }
                     }
                 }
 
