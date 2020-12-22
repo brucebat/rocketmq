@@ -179,6 +179,7 @@ public class AsyncTraceDispatcher implements TraceDispatcher {
 
     @Override
     public void flush() throws IOException {
+        // 进行清理操作
         // The maximum waiting time for refresh,avoid being written all the time, resulting in failure to return.
         long end = System.currentTimeMillis() + 500;
         while (traceContextQueue.size() > 0 || appenderQueue.size() > 0 && System.currentTimeMillis() <= end) {
@@ -201,6 +202,9 @@ public class AsyncTraceDispatcher implements TraceDispatcher {
         this.removeShutdownHook();
     }
 
+    /**
+     * 注册JVM优雅关闭钩子
+     */
     public void registerShutDownHook() {
         if (shutDownHook == null) {
             shutDownHook = new Thread(new Runnable() {
@@ -280,6 +284,11 @@ public class AsyncTraceDispatcher implements TraceDispatcher {
             sendTraceData(contextList);
         }
 
+        /**
+         * 发送链路追踪数据
+         *
+         * @param contextList 文本列表
+         */
         public void sendTraceData(List<TraceContext> contextList) {
             Map<String, List<TraceTransferBean>> transBeanMap = new HashMap<String, List<TraceTransferBean>>();
             for (TraceContext context : contextList) {
@@ -310,6 +319,7 @@ public class AsyncTraceDispatcher implements TraceDispatcher {
                     dataTopic = key[0];
                     regionId = key[1];
                 }
+                // 将数据发送到MQ当中
                 flushData(entry.getValue(), dataTopic, regionId);
             }
         }

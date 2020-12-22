@@ -114,6 +114,19 @@ public class RouteInfoManager {
         return topicList.encode();
     }
 
+    /**
+     * 进行Broker信息注册
+     *
+     * @param clusterName 集群名称
+     * @param brokerAddr broker地址
+     * @param brokerName broker名称
+     * @param brokerId brokerId，用于区分主从关系
+     * @param haServerAddr 高可用服务地址
+     * @param topicConfigWrapper 主题配置包装类
+     * @param filterServerList 过滤服务列表
+     * @param channel Netty通信通道
+     * @return 注册Broker结果
+     */
     public RegisterBrokerResult registerBroker(
         final String clusterName,
         final String brokerAddr,
@@ -128,11 +141,7 @@ public class RouteInfoManager {
             try {
                 this.lock.writeLock().lockInterruptibly();
 
-                Set<String> brokerNames = this.clusterAddrTable.get(clusterName);
-                if (null == brokerNames) {
-                    brokerNames = new HashSet<String>();
-                    this.clusterAddrTable.put(clusterName, brokerNames);
-                }
+                Set<String> brokerNames = this.clusterAddrTable.computeIfAbsent(clusterName, k -> new HashSet<String>());
                 brokerNames.add(brokerName);
 
                 boolean registerFirst = false;

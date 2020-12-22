@@ -164,6 +164,7 @@ public class RemoteBrokerOffsetStore implements OffsetStore {
         }
     }
 
+    @Override
     public void removeOffset(MessageQueue mq) {
         if (mq != null) {
             this.offsetTable.remove(mq);
@@ -235,6 +236,7 @@ public class RemoteBrokerOffsetStore implements OffsetStore {
 
         if (findBrokerResult != null) {
             QueryConsumerOffsetRequestHeader requestHeader = new QueryConsumerOffsetRequestHeader();
+            // 这里按照topic、消费者组和队列维度获取消息消费偏移量
             requestHeader.setTopic(mq.getTopic());
             requestHeader.setConsumerGroup(this.groupName);
             requestHeader.setQueueId(mq.getQueueId());

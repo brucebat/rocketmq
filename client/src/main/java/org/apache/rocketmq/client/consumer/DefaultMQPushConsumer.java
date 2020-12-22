@@ -514,6 +514,12 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
         return consumeFromWhere;
     }
 
+    /**
+     * 设置从什么地方开始进行消息消费。
+     * 注意：这里设置的参数优先级在OffsetStore存储的offset之后，大部分情况这个设置在ConsumerGroup初次启动时会生效。
+     *
+     * @param consumeFromWhere 枚举类，用于指定从什么位置开始进行消费
+     */
     public void setConsumeFromWhere(ConsumeFromWhere consumeFromWhere) {
         this.consumeFromWhere = consumeFromWhere;
     }
